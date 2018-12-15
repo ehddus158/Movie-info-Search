@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <import type="com.example.isbee.moviesearch.viewmodel.MovieViewModel"/>
+        <import type="com.example.isbee.moviesearch.model.MovieItem"/>
+
+        <variable
+            name="movieViewModel"
+            type="MovieViewModel" />
+        <variable
+            name="movieItem"
+            type="MovieItem" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{(v)-> movieViewModel.onClickCardView(v, movieItem.link)}">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                card_view:layout_constraintHorizontal_weight="2"
+                card_view:layout_constraintLeft_toLeftOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent"
+                card_view:layout_constraintRight_toLeftOf="@+id/texts"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:srcUrl="@{movieItem.imageURL}"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/texts"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                card_view:layout_constraintHorizontal_weight="5"
+                card_view:layout_constraintLeft_toRightOf="@id/image"
+                card_view:layout_constraintTop_toTopOf="parent"
+                card_view:layout_constraintRight_toRightOf="parent"
+                card_view:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{movieItem.title}"
+                    android:textScaleX="1.2"
+                    card_view:layout_constraintLeft_toLeftOf="parent"
+                    card_view:layout_constraintTop_toTopOf="parent"
+                    card_view:layout_constraintBottom_toTopOf="@id/userRating"/>
+
+                <TextView
+                    android:id="@+id/userRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{`평점: ` + movieItem.userRating}"
+                    card_view:layout_constraintLeft_toLeftOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@id/title"
+                    card_view:layout_constraintBottom_toTopOf="@id/pubDate"/>
+
+                <TextView
+                    android:id="@+id/pubDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{`개봉년도: ` + movieItem.pubDate}"
+                    card_view:layout_constraintLeft_toLeftOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@id/userRating"
+                    card_view:layout_constraintBottom_toTopOf="@id/director"/>
+
+                <TextView
+                    android:id="@+id/director"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{`감독: ` + movieItem.director}"
+                    card_view:layout_constraintLeft_toLeftOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@id/pubDate"
+                    card_view:layout_constraintBottom_toTopOf="@id/actor"/>
+
+                <TextView
+                    android:id="@+id/actor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{`배우: ` + movieItem.actor}"
+                    card_view:layout_constraintLeft_toLeftOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@id/director"
+                    card_view:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

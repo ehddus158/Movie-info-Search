@@ -1,6 +1,6 @@
 package com.example.isbee.moviesearch.api;
 
-import com.example.isbee.moviesearch.util.ClientUtility;
+import com.example.isbee.moviesearch.util.ClientUtil;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -29,8 +29,8 @@ public enum NaverSearchClientSingleton {
         client = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
                     Request request = chain.request().newBuilder()
-                            .addHeader("X-Naver-Client-Id", ClientUtility.getClientID())
-                            .addHeader("X-Naver-Client-Secret", ClientUtility.getClientSecret())
+                            .addHeader("X-Naver-Client-Id", ClientUtil.getClientID())
+                            .addHeader("X-Naver-Client-Secret", ClientUtil.getClientSecret())
                             .build();
                     return chain.proceed(request);
                 })

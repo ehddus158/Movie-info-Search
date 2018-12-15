@@ -1,33 +1,67 @@
 package com.example.isbee.moviesearch.viewmodel;
 
+import com.example.isbee.moviesearch.model.MovieItem;
 import com.example.isbee.moviesearch.model.Repository;
+import com.example.isbee.moviesearch.util.SingleLiveEvent;
+import com.example.isbee.moviesearch.view.WebActivity;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
-import android.util.Log;
+import android.content.Context;
+import android.content.Intent;
+import android.view.View;
+import java.util.List;
 
 public final class MovieViewModel extends DisposableViewModel {
 
     private final Repository networkRepo;
 
+    private final MutableLiveData<List<MovieItem>> movieItems;
+    private final SingleLiveEvent<Object> searchClickEvent;
+    private final MutableLiveData<String> errorMessage;
+
     public MovieViewModel(Repository networkRepo) {
         this.networkRepo = networkRepo;
+
+        this.movieItems = new MutableLiveData<>();
+        this.searchClickEvent = new SingleLiveEvent<>();
+        this.errorMessage = new MutableLiveData<>();
     }
 
     public void getMovieResponse(String title) {
         addDisposable(networkRepo.getMovieItems(title)
-                .subscribeOn(Schedulers.io()) // Observable is called outside the main thread
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(channel -> {
-                    // onSuccess 에서 해야할 것
-                    // 필요하면 HTTP status code 처리
+                .subscribe(items ->
+                    movieItems.setValue(items)
+                , throwable ->
+                    errorMessage.setValue(throwable.getMessage())
+                ));
+    }
 
-                    // LiveData 로 데이터 저장
-                    Log.d("Get the Fuck Item", channel.get(0).getActor());
+    public LiveData<List<MovieItem>> getMovieItems() {
+        return movieItems;
+    }
 
-                }, throwable -> {
-                    // onError 에서 해야할 것
-                }));
+    public LiveData<Object> getSearchClickEvent() {
+        return searchClickEvent;
+    }
+
+    public LiveData<String> getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void onClickSearchButton() {
+        searchClickEvent.call();
+    }
+
+    public void onClickCardView(View view, String link) {
+        Context context = view.getContext();
+        Intent intent = new Intent(context, WebActivity.class);
+        intent.putExtra("link", link);
+        context.startActivity(intent);
     }
 }

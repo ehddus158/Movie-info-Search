@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:web_view="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="linkUrl"
+            type="String"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            web_view:layout_constraintTop_toTopOf="parent"
+            web_view:layout_constraintBottom_toBottomOf="parent"
+            web_view:layout_constraintLeft_toLeftOf="parent"
+            web_view:layout_constraintRight_toRightOf="parent"
+            web_view:loadUrl="@{linkUrl}"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
