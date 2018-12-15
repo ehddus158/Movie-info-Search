@@ -15,6 +15,8 @@ public class BindingAdapterUtil {
 
     @BindingAdapter({"srcUrl"})
     public static void setImageUrl(ImageView view, String url) {
-        Picasso.get().load(url).into(view);
+        if (url.length() != 0) {
+            Picasso.get().load(url).resize(400, 300).centerInside().into(view);
+        }
     }
 }

@@ -13,6 +13,8 @@ import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+
 import java.util.List;
 
 public final class MovieViewModel extends DisposableViewModel {
@@ -54,8 +56,9 @@ public final class MovieViewModel extends DisposableViewModel {
         return errorMessage;
     }
 
-    public void onClickSearchButton() {
+    public void onClickSearchButton(View view) {
         searchClickEvent.call();
+        hideSoftKey(view);
     }
 
     public void onClickCardView(View view, String link) {
@@ -63,5 +66,10 @@ public final class MovieViewModel extends DisposableViewModel {
         Intent intent = new Intent(context, WebActivity.class);
         intent.putExtra("link", link);
         context.startActivity(intent);
+    }
+
+    private void hideSoftKey(View view) {
+        InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

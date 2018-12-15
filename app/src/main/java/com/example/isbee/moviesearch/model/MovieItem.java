@@ -1,5 +1,7 @@
 package com.example.isbee.moviesearch.model;
 
+import android.graphics.Movie;
+
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.annotations.Expose;
 
@@ -60,5 +62,17 @@ public final class MovieItem {
 
     public String getUserRating() {
         return userRating;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof MovieItem) {
+            MovieItem movieItem = (MovieItem) obj;
+            return getTitle() == movieItem.getTitle()
+                    && getLink() == movieItem.getLink()
+                    && getImageURL() == movieItem.getImageURL()
+                    && getUserRating() == movieItem.getUserRating();
+        }
+        return false;
     }
 }

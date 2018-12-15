@@ -31,11 +31,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         viewDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         movieViewModel = ViewModelProviders.of(this, getViewModelFactoryWithDI()).get(MovieViewModel.class);
-
-        viewDataBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         movieItemAdapter = new MovieItemAdapter(movieViewModel);
-        viewDataBinding.recyclerView.setAdapter(movieItemAdapter);
+
+        basicSetUp();
 
         movieViewModel.getSearchClickEvent().observe(this, event ->
                 movieViewModel.getMovieResponse(viewDataBinding.query.getText().toString())
@@ -43,15 +41,12 @@ public class MainActivity extends AppCompatActivity {
 
         movieViewModel.getMovieItems().observe(this, movieItems -> {
                 movieItemAdapter.setMovieItems(movieItems);
-                movieItemAdapter.notifyDataSetChanged();
         });
 
         movieViewModel.getErrorMessage().observe(this, errorMessage ->
                 Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
         );
 
-        viewDataBinding.setMovieViewModel(movieViewModel);
-        viewDataBinding.setLifecycleOwner(this);
     }
 
     private ViewModelProvider.Factory getViewModelFactoryWithDI() {
@@ -60,5 +55,13 @@ public class MainActivity extends AppCompatActivity {
         ViewModelProvider.Factory factory = new MovieViewModelFactory(repo);
 
         return factory;
+    }
+
+    private void basicSetUp() {
+        viewDataBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        viewDataBinding.recyclerView.setAdapter(movieItemAdapter);
+
+        viewDataBinding.setMovieViewModel(movieViewModel);
+        viewDataBinding.setLifecycleOwner(this);
     }
 }
