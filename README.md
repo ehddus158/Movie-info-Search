@@ -14,5 +14,5 @@
 * MVVM 패턴
 
 ## 그 외
-* API 클라이언트 객체는 Singletone 을 적용했습니다
+* API 클라이언트 객체는 Singleton을 적용했습니다
 * [SingleLiveEvent](https://github.com/googlesamples/android-architecture/blob/dev-todo-mvvm-live/todoapp/app/src/main/java/com/example/android/architecture/blueprints/todoapp/SingleLiveEvent.java)를 사용해서 click 이벤트를 observe 했습니다
