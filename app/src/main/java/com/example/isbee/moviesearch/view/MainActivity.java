@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
                 movieViewModel.getMovieResponse(viewDataBinding.query.getText().toString())
         );
 
-        movieViewModel.getMovieItems().observe(this, movieItems -> {
-                movieItemAdapter.setMovieItems(movieItems);
+        movieViewModel.getMoviePair().observe(this, pair -> {
+                movieItemAdapter.updateMovieItems(pair);
         });
 
         movieViewModel.getErrorMessage().observe(this, errorMessage ->

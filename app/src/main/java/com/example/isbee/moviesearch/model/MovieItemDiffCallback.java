@@ -2,15 +2,17 @@ package com.example.isbee.moviesearch.model;
 
 import androidx.recyclerview.widget.DiffUtil;
 
+import com.example.isbee.moviesearch.util.Pair;
+
 import java.util.List;
 
 public class MovieItemDiffCallback extends DiffUtil.Callback {
 
     private final List<MovieItem> oldMovieItems, newMovieItems;
 
-    public MovieItemDiffCallback(List<MovieItem> oldMovieItems, List<MovieItem> newMovieItems) {
-        this.oldMovieItems = oldMovieItems;
-        this.newMovieItems = newMovieItems;
+    public MovieItemDiffCallback(Pair<List<MovieItem>, List<MovieItem>> pair) {
+        this.oldMovieItems = pair.first;
+        this.newMovieItems = pair.second;
     }
 
     @Override
@@ -25,11 +27,15 @@ public class MovieItemDiffCallback extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldMovieItems.get(oldItemPosition).getTitle() == newMovieItems.get(newItemPosition).getTitle();
+        return oldMovieItems.get(oldItemPosition).getTitle().equals(newMovieItems.get(newItemPosition).getTitle());
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
         return oldMovieItems.get(oldItemPosition).equals(newMovieItems.get(newItemPosition));
     }
+
+    public List<MovieItem> getOldMovieItems() { return oldMovieItems; }
+
+    public List<MovieItem> getNewMovieItems() { return newMovieItems; }
 }

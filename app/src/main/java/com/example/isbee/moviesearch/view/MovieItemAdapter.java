@@ -4,7 +4,7 @@ import com.example.isbee.moviesearch.databinding.ItemMovieBinding;
 import com.example.isbee.moviesearch.model.MovieItem;
 
 import com.example.isbee.moviesearch.R;
-import com.example.isbee.moviesearch.model.MovieItemDiffCallback;
+import com.example.isbee.moviesearch.util.Pair;
 import com.example.isbee.moviesearch.viewmodel.MovieViewModel;
 
 import androidx.databinding.DataBindingUtil;
@@ -41,7 +41,7 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        movieItems = movieViewModel.getMovieItems().getValue();
+        movieItems = movieViewModel.getMoviePair().getValue().second;
         MovieItem movieItem = movieItems.get(position);
         holder.bindMovieItem(movieItem);
     }
@@ -55,16 +55,13 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
         itemMovieBinding.setMovieViewModel(movieViewModel);
     }
 
-    public void setMovieItems(List<MovieItem> movieItems) {
+    public void updateMovieItems(Pair<DiffUtil.DiffResult, List<MovieItem>> pair) {
         if (this.movieItems != null) {
-            MovieItemDiffCallback diffCallback = new MovieItemDiffCallback(this.movieItems, movieItems);
-            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-
             this.movieItems.clear();
-            this.movieItems.addAll(movieItems);
-            diffResult.dispatchUpdatesTo(this);
+            this.movieItems.addAll(pair.second);
+            pair.first.dispatchUpdatesTo(this);
         }
-        else this.movieItems = movieItems;
+        else this.movieItems = pair.second;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
